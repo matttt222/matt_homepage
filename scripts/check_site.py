@@ -13,13 +13,66 @@ ROOT = Path(__file__).resolve().parents[1]
 REQUIRED_FILES = (
     "index.html",
     "publications.html",
-    "projects/s2m-inject.html",
-    "projects/amend.html",
     "assets/css/styles.css",
     "assets/js/site.js",
     "assets/data/projects.js",
     "assets/img/mark.svg",
+    "scripts/check_s2m_samples.js",
+    "scripts/check_homepage_layout.js",
     "README.md",
+)
+
+RESEARCH_ASSETS = (
+    "assets/img/papers/s2m-method.png",
+    "assets/img/papers/s2m-results.png",
+    "assets/img/papers/s2m-ablation.png",
+    "assets/img/papers/amend-method.png",
+    "assets/img/papers/amend-results.png",
+    "assets/audio/s2m/en-hiphop-quan-reference.wav",
+    "assets/audio/s2m/en-hiphop-quan-generated.wav",
+    "assets/audio/s2m/en-pop-broken-lover-reference.wav",
+    "assets/audio/s2m/en-pop-broken-lover-generated.wav",
+    "assets/audio/s2m/zh-hiphop-reference.wav",
+    "assets/audio/s2m/zh-hiphop-generated.wav",
+    "assets/audio/s2m/zh-pop-eternal-reference.wav",
+    "assets/audio/s2m/zh-pop-eternal-generated.wav",
+    "assets/audio/s2m/zh-pop-heartbreak-reference.wav",
+    "assets/audio/s2m/zh-pop-heartbreak-generated.wav",
+    "assets/audio/amend/replacement-en-reference.wav",
+    "assets/audio/amend/replacement-en-amend.wav",
+    "assets/audio/amend/insertion-zh-reference.wav",
+    "assets/audio/amend/insertion-zh-amend.wav",
+    "assets/audio/amend/deletion-zh-reference.wav",
+    "assets/audio/amend/deletion-zh-amend.wav",
+    "assets/audio/amend/full-replacement-en-reference.wav",
+    "assets/audio/amend/full-replacement-en-amend.wav",
+    "assets/audio/amend/full-replacement-zh-reference.wav",
+    "assets/audio/amend/full-replacement-zh-amend.wav",
+)
+
+REQUIRED_HOME_TOKENS = (
+    'id="about"',
+    'id="s2m"',
+    'id="amend"',
+    'id="publications"',
+    'id="contact"',
+    'data-audio-project="s2m"',
+    'data-audio-project="amend"',
+    'data-figure-open',
+    'data-figure-dialog',
+    'data-figure-close',
+)
+
+FORBIDDEN_HOME_PHRASES = (
+    "研究不只停在论文",
+    "从研究问题到可用能力",
+    "让结果自己说话",
+)
+
+REQUIRED_SCRIPT_TOKENS = (
+    "dialog.showModal()",
+    "audio.pause()",
+    "figureDialogImage.alt",
 )
 
 
@@ -89,7 +142,28 @@ def main() -> int:
         if not path.exists():
             errors.append(f"Missing required file: {relative}")
 
-    for relative in ("index.html", "publications.html", "projects/s2m-inject.html", "projects/amend.html"):
+    for relative in RESEARCH_ASSETS:
+        if not (ROOT / relative).exists():
+            errors.append(f"Missing research asset: {relative}")
+
+    homepage = ROOT / "index.html"
+    if homepage.exists():
+        homepage_text = homepage.read_text(encoding="utf-8")
+        for token in REQUIRED_HOME_TOKENS:
+            if token not in homepage_text:
+                errors.append(f"index.html: missing required research hook {token}")
+        for phrase in FORBIDDEN_HOME_PHRASES:
+            if phrase in homepage_text:
+                errors.append(f"index.html: promotional phrase remains: {phrase}")
+
+    site_script = ROOT / "assets/js/site.js"
+    if site_script.exists():
+        script_text = site_script.read_text(encoding="utf-8")
+        for token in REQUIRED_SCRIPT_TOKENS:
+            if token not in script_text:
+                errors.append(f"assets/js/site.js: missing interaction behavior {token}")
+
+    for relative in ("index.html", "publications.html"):
         page = ROOT / relative
         if page.exists():
             errors.extend(check_page(page))
