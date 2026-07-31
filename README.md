@@ -1,77 +1,55 @@
-# 马腾个人研究作品集
+# 马腾个人研究主页
 
-一个中文为主、面向招聘者与学术同行的静态研究作品集，重点展示音频生成、语音编辑和多模态研究。
+一个不依赖构建工具的静态研究主页，主要介绍音频生成、语音编辑与多模态建模工作。
+
+## 首页结构
+
+- 简短个人介绍与联系方式；
+- AMEND：统一语音编辑方法、论文实验表、5 组原始语音与编辑结果；
+- S2M-Inject：研究问题、模型结构、论文实验表、5 组精选的中英文语音到音乐样例；
+- 其他论文、专利与荣誉入口。
+
+首页使用论文原图裁剪展示方法与结果，不重新绘制或改写表中数值。AMEND 和 S2M-Inject 的方法、结果与全部精选 Demo 均直接显示在主页；旧项目详情文件保留，但网站不再提供入口。成果页现有的 arXiv 论文链接继续保留。
+
+## 目录
+
+```text
+assets/
+├── audio/
+│   ├── amend/          # 5 组 reference / AMEND 结果
+│   └── s2m/            # 5 组活动样例及保留的历史音频
+├── data/projects.js    # Demo 文本、指令与音频路径
+├── img/papers/         # 从提交论文中裁剪的方法图与实验表
+├── css/styles.css
+└── js/site.js
+```
+
+`site.js` 根据 `projects.js` 生成播放器；所有音频均使用 `preload="none"`，不会自动播放，同一时间只允许播放一条音频。AMEND 的 5 组样例和 S2M 的 5 组精选样例均直接显示；S2M 样例同时展示公开 Demo 中未经精简的完整英文 caption。
 
 ## 本地预览
 
-在工作区根目录执行：
+在本仓库根目录执行：
 
 ```bash
-python -m http.server 8000 --directory portfolio-site
+python -m http.server 8000
 ```
 
-然后访问 `http://localhost:8000`。
+然后打开 `http://localhost:8000`。
 
-## 内容结构
-
-- `index.html`：个人定位、能力概览、精选项目与实习经历。
-- `projects/s2m-inject.html`：S2M-Inject 项目详情及公开 Demo 入口。
-- `projects/amend.html`：AMEND 项目详情与音频对比结构。
-- `publications.html`：论文、技术报告、专利和荣誉。
-- `assets/data/projects.js`：Demo 地址与音频样例配置。
-
-## 添加音频样例
-
-将获得公开许可的音频放入 `assets/audio/<project>/`，再编辑 `assets/data/projects.js` 中对应项目的 `samples`。每条样例结构如下：
-
-```js
-{
-  title: "样例名称",
-  mode: "内容寻址",
-  description: "编辑目标或生成条件",
-  tracks: [
-    { label: "原始语音", src: "../assets/audio/amend/example-original.mp3" },
-    { label: "编辑结果", src: "../assets/audio/amend/example-edited.mp3" },
-  ],
-}
-```
-
-项目页位于 `projects/` 子目录，因此音频相对路径需要以 `../assets/` 开头。播放器使用 `preload="none"`，不会自动播放，且同一时间只播放一条音频。
-
-## 运行检查
+## 检查
 
 ```bash
-python portfolio-site/scripts/check_site.py
-node --check portfolio-site/assets/data/projects.js
-node --check portfolio-site/assets/js/site.js
+python scripts/check_site.py
+node --check assets/data/projects.js
+node --check assets/js/site.js
+node scripts/check_s2m_samples.js
+node scripts/check_homepage_layout.js
 ```
+
+结构检查会验证主要页面、论文截图、Demo 音频、无障碍交互标记和内部链接是否完整。
 
 ## 部署到 GitHub Pages
 
-在工作区根目录执行：
+将仓库推送到 GitHub 后，进入 **Settings → Pages**，在 **Build and deployment** 中选择 **Deploy from a branch**，分支选择 `main`，目录选择 `/ (root)`。
 
-```bash
-cd portfolio-site
-git init
-git add .
-git commit -m "feat: add personal research portfolio"
-git branch -M main
-```
-
-在 GitHub 新建一个空仓库后，设置下面两个变量并推送：
-
-```bash
-PORTFOLIO_GITHUB_USER="你的 GitHub 用户名"
-PORTFOLIO_REPO="你的仓库名"
-git remote add origin "https://github.com/${PORTFOLIO_GITHUB_USER}/${PORTFOLIO_REPO}.git"
-git push -u origin main
-```
-
-随后进入仓库的 **Settings → Pages**，在 **Build and deployment** 中选择 **Deploy from a branch**，分支选择 `main`，目录选择 `/ (root)`。
-
-## 发布前检查
-
-- 确认论文状态仍然准确。
-- 确认所有音频及图片允许公开。
-- 补充 GitHub 地址或公开简历链接时，使用真实 URL，不添加空锚点。
-- 网站不包含手机号、生日、统计脚本或遥测请求。
+发布前应再次确认论文状态、作者信息及所有音频和图片的公开权限。
