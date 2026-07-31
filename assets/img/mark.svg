@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Teng Ma audio mark">
+  <defs><linearGradient id="g" x1="8" y1="8" x2="56" y2="56" gradientUnits="userSpaceOnUse"><stop stop-color="#5ce1e6"/><stop offset="1" stop-color="#6b9cff"/></linearGradient></defs>
+  <rect width="64" height="64" rx="17" fill="#0b1222"/>
+  <path d="M15 35V29M23 44V20M32 50V14M41 42V22M49 36V28" fill="none" stroke="url(#g)" stroke-width="5" stroke-linecap="round"/>
+</svg>

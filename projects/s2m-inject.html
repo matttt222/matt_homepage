@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="zh-CN" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="S2M-Inject：面向音乐生成的提示引导零样本音色克隆研究。">
+  <meta name="theme-color" content="#080d19">
+  <title>S2M-Inject｜马腾的研究作品</title>
+  <link rel="icon" href="../assets/img/mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <script>document.documentElement.classList.replace('no-js', 'js');</script>
+  <script defer src="../assets/data/projects.js"></script>
+  <script defer src="../assets/js/site.js"></script>
+</head>
+<body data-page="s2m">
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <div class="ambient ambient-blue" aria-hidden="true"></div>
+  <header class="site-header" data-header>
+    <div class="container nav-shell">
+      <a class="brand" href="../index.html" aria-label="马腾的作品集首页"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i></span><span>马腾 <small>Teng Ma</small></span></a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav"><span class="sr-only">打开导航</span><span></span><span></span></button>
+      <nav id="site-nav" class="site-nav" aria-label="主导航">
+        <a href="../index.html">首页</a><a class="is-active" href="../index.html#selected-work">精选作品</a><a href="../publications.html">全部成果</a><a href="../index.html#about">关于</a><a class="nav-contact" href="mailto:matttt2229@gmail.com">联系我</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-hero container project-hero">
+      <div data-reveal>
+        <nav class="breadcrumb" aria-label="面包屑"><a href="../index.html">首页</a><span>/</span><span>S2M-Inject</span></nav>
+        <p class="eyebrow"><span></span> FIRST-AUTHOR RESEARCH · EMNLP 2026</p>
+        <h1>S2M-<span class="text-gradient">Inject</span></h1>
+        <p class="lead">Prompt-Guided Zero-Shot Voice Cloning for Music Generation</p>
+        <p class="author-line"><strong>Teng Ma</strong>, Chunyu Qiang, Zhongliang Liu, Xiaopeng Wang, Kang Yin, Ziyu Zhang, Yuzhe Liang, Yushen Chen, Yuxin Guo, Feiyu Chen</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="https://anonymous.4open.science/w/S2M-Inject-975" target="_blank" rel="noopener noreferrer">打开完整 Demo <span aria-hidden="true">↗</span></a>
+          <span class="status-chip">Submitted to EMNLP 2026</span>
+        </div>
+      </div>
+      <div class="project-hero-art project-art s2m-art" data-reveal aria-label="从参考语音注入目标音色并生成音乐的示意图">
+        <div class="voice-source"><span>Reference speech</span><div class="wave-bars wave-blue"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        <div class="inject-core"><span>S2M</span><small>INJECT</small></div>
+        <div class="music-output"><span>Generated music</span><div class="wave-bars wave-cyan"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
+        <svg viewBox="0 0 420 180" role="presentation"><path d="M72 90 C135 30 155 150 215 90 S300 35 354 90"/><path d="M72 104 C125 164 175 44 224 104 S302 155 354 104"/></svg>
+      </div>
+    </section>
+
+    <div class="section container content-grid">
+      <nav class="side-index" aria-label="本页目录"><a href="#overview">15 秒摘要</a><a href="#problem">研究问题</a><a href="#method">核心思路</a><a href="#contribution">我的贡献</a><a href="#demo">Demo</a><a href="#paper">论文信息</a></nav>
+      <div>
+        <section id="overview" class="project-section" data-reveal>
+          <p class="section-index">00 / IN 15 SECONDS</p>
+          <h2>用一段参考语音，<br>控制音乐中的目标音色。</h2>
+          <p>S2M-Inject 面向语音到音乐的跨域音色迁移：模型从参考语音中提取说话人音色，并将其注入歌声及音乐生成过程。研究重点不是复制参考内容，而是在新的音乐条件下保持可辨识的音色身份。</p>
+        </section>
+
+        <section id="problem" class="project-section" data-reveal>
+          <p class="section-index">01 / PROBLEM</p>
+          <h2>跨域条件下，“同一个声音”意味着什么？</h2>
+          <p>参考信号来自日常语音，生成目标却包含歌唱、节奏和伴奏。二者在音高、韵律与声学环境上存在显著差异，因此模型需要保留与说话人身份相关的音色信息，同时避免把参考语音的内容和局部韵律机械复制到音乐中。</p>
+          <div class="insight-grid">
+            <article class="insight-card"><span>01</span><h3>跨域差异</h3><p>从说话到歌唱，内容、音高与时长分布均发生变化。</p></article>
+            <article class="insight-card"><span>02</span><h3>音色保持</h3><p>生成结果需要保留目标说话人的身份特征与听感一致性。</p></article>
+            <article class="insight-card"><span>03</span><h3>音乐可用性</h3><p>音色控制不能破坏整体音乐结构与自然度。</p></article>
+          </div>
+        </section>
+
+        <section id="method" class="project-section" data-reveal>
+          <p class="section-index">02 / METHOD</p>
+          <h2>提示引导的音色注入与统一生成</h2>
+          <p>该工作设计音色注入机制，将参考语音中的说话人条件引入音乐生成；同时结合多模态统一生成策略，让音色提示与音乐条件在同一生成过程中协同作用。此处仅呈现已在简历中确认的方法概念，完整技术细节以论文为准。</p>
+          <div class="method-flow" aria-label="S2M-Inject 方法流程">
+            <div><small>INPUT A</small><strong>参考语音</strong><span>Speaker timbre</span></div><i aria-hidden="true">→</i><div class="method-core"><small>CONDITION</small><strong>音色注入</strong><span>Prompt-guided</span></div><i aria-hidden="true">→</i><div><small>OUTPUT</small><strong>音乐生成</strong><span>Voice-aware music</span></div>
+          </div>
+        </section>
+
+        <section id="contribution" class="project-section" data-reveal>
+          <p class="section-index">03 / MY CONTRIBUTION</p>
+          <h2>我在项目中负责什么</h2>
+          <ol class="contribution-list">
+            <li>提出面向音乐生成的跨域音色克隆问题与整体研究框架。</li>
+            <li>设计音色注入机制及多模态统一生成策略，并完成训练与消融验证。</li>
+            <li>围绕跨域条件下的音色保持和音乐生成能力组织评测与结果分析。</li>
+            <li>以第一作者完成论文组织、实验呈现与投稿材料。</li>
+          </ol>
+        </section>
+
+        <section id="demo" class="project-section" data-reveal>
+          <p class="section-index">04 / LISTEN</p>
+          <h2>听见跨域音色迁移</h2>
+          <p>建议在完整 Demo 中先播放参考语音，再播放对应的生成音乐，重点关注不同音乐条件下的音色身份是否保持。</p>
+          <div class="audio-samples" data-audio-project="s2m"></div>
+        </section>
+
+        <section id="paper" class="project-section" data-reveal>
+          <p class="section-index">05 / PAPER</p>
+          <h2>论文信息</h2>
+          <article class="citation-card">
+            <span class="status-chip">Submitted to EMNLP 2026</span>
+            <h3>S2M-Inject: Prompt-Guided Zero-Shot Voice Cloning for Music Generation</h3>
+            <p><strong>Teng Ma</strong>, Chunyu Qiang, Zhongliang Liu, Xiaopeng Wang, Kang Yin, Ziyu Zhang, Yuzhe Liang, Yushen Chen, Yuxin Guo, Feiyu Chen</p>
+            <a class="text-link" href="https://anonymous.4open.science/w/S2M-Inject-975" target="_blank" rel="noopener noreferrer">Project Demo ↗</a>
+          </article>
+        </section>
+      </div>
+    </div>
+  </main>
+  <footer class="site-footer"><div class="container"><span>© 2026 Teng Ma</span><a href="../publications.html">继续浏览全部成果 →</a><a href="#main">回到顶部 ↑</a></div></footer>
+</body>
+</html>
